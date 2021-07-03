@@ -17,3 +17,7 @@ const kMessageContainerDecoration = BoxDecoration(
     top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
   ),
 );
+
+const kTagLogo = 'logo';
+const kTagRegisterBtn = 'resgiterBtn';
+const kTagLoginBtn = 'loginBtn';
