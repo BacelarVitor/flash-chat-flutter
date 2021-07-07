@@ -1,4 +1,5 @@
 import 'package:flash_chat/components/RoudedButton.dart';
+import 'package:flash_chat/components/inputField.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String email;
+  String password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,22 +32,18 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 48.0,
             ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+            InputField(
+              onChanged: (value) => email = value,
+              hintText: 'Enter your email',
+              keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(
               height: 8.0,
             ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password'),
+            InputField(
+              onChanged: (value) => password = value,
+              hintText: 'Enter your password',
+              obscureText: true,
             ),
             SizedBox(
               height: 24.0,

@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flash_chat/components/RoudedButton.dart';
+import 'package:flash_chat/components/inputField.dart';
 import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -9,6 +13,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _auth = FirebaseAuth.instance;
+  String email;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,22 +37,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             SizedBox(
               height: 48.0,
             ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+            InputField(
+              onChanged: (value) => email = value,
+              hintText: 'Enter your email',
+              keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(
               height: 8.0,
             ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password'),
+            InputField(
+              onChanged: (value) => password = value,
+              hintText: 'Enter your password',
+              obscureText: true,
             ),
             SizedBox(
               height: 24.0,
@@ -54,7 +58,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               child: RoundedButton(
                 label: 'Register',
                 color: Colors.blueAccent,
-                onPressed: () {},
+                onPressed: () async {
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(email);
+                  bool passwordValid = password != null || password.length >= 8;
+                  if (emailValid && passwordValid) {
+                    try {
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: email, password: password);
+                      if (newUser != null)
+                        Navigator.pushNamed(context, ChatScreen.id);
+                    } catch (e) {
+                      print(e);
+                    }
+                  }
+                },
               ),
             ),
           ],
