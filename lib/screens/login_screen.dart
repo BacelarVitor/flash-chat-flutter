@@ -63,38 +63,40 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 24.0,
               ),
-              Hero(
-                tag: kTagLoginBtn,
-                child: RoundedButton(
-                  label: 'Log In',
-                  color: Colors.lightBlueAccent,
-                  onPressed: () async {
-                    changeShowSpinner();
-
-                    bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(email);
-                    bool passwordValid =
-                        password != null || password.length >= 8;
-                    if (emailValid && passwordValid) {
-                      try {
-                        final user = await _auth.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        print(user);
-                        if (user != null) {
-                          email = null;
-                          password = null;
-                          changeShowSpinner();
-                          Navigator.pushNamed(context, ChatScreen.id);
-                        }
-                      } catch (e) {
-                        changeShowSpinner();
-                        print(e);
-                      }
-
+              Flexible(
+                child: Hero(
+                  tag: kTagLoginBtn,
+                  child: RoundedButton(
+                    label: 'Log In',
+                    color: Colors.lightBlueAccent,
+                    onPressed: () async {
                       changeShowSpinner();
-                    }
-                  },
+
+                      bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(email);
+                      bool passwordValid =
+                          password != null || password.length >= 8;
+                      if (emailValid && passwordValid) {
+                        try {
+                          final user = await _auth.signInWithEmailAndPassword(
+                              email: email, password: password);
+
+                          if (user != null) {
+                            email = null;
+                            password = null;
+                            changeShowSpinner();
+                            Navigator.pushNamed(context, ChatScreen.id);
+                          }
+                        } catch (e) {
+                          changeShowSpinner();
+                          print(e);
+                        }
+
+                        changeShowSpinner();
+                      }
+                    },
+                  ),
                 ),
               ),
             ],

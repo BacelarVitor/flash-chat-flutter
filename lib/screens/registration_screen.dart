@@ -62,35 +62,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 24.0,
               ),
-              Hero(
-                tag: kTagRegisterBtn,
-                child: RoundedButton(
-                  label: 'Register',
-                  color: Colors.blueAccent,
-                  onPressed: () async {
-                    bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(email);
-                    bool passwordValid =
-                        password != null || password.length >= 8;
-                    if (emailValid && passwordValid) {
-                      changeShowSpinner();
-                      try {
-                        final newUser =
-                            await _auth.createUserWithEmailAndPassword(
-                                email: email, password: password);
-                        if (newUser != null) {
-                          password = null;
-                          email = null;
-                          changeShowSpinner();
-                          Navigator.pushNamed(context, ChatScreen.id);
-                        }
-                      } catch (e) {
+              Flexible(
+                child: Hero(
+                  tag: kTagRegisterBtn,
+                  child: RoundedButton(
+                    label: 'Register',
+                    color: Colors.blueAccent,
+                    onPressed: () async {
+                      bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(email);
+                      bool passwordValid =
+                          password != null || password.length >= 8;
+                      if (emailValid && passwordValid) {
                         changeShowSpinner();
-                        print(e);
+                        try {
+                          final newUser =
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: email, password: password);
+                          if (newUser != null) {
+                            password = null;
+                            email = null;
+                            changeShowSpinner();
+                            Navigator.pushNamed(context, ChatScreen.id);
+                          }
+                        } catch (e) {
+                          changeShowSpinner();
+                          print(e);
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 ),
               ),
             ],
